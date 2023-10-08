@@ -20,8 +20,11 @@ The search engine is adapted from an assignment posted online for a big data cou
 
 # Setup
 Download and decompress the Wikipedia backup
+
 Download and unzip the repo
+
 Open /wikipedia-processing/src/main/scala/com/brian/App.scala in a text editor
+
 Edit line 13 to point to the filepath of the decompressed Wikipedia backup
 ```
 val filepath = "PATH_TO_FILE"
