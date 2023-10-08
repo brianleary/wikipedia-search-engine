@@ -8,6 +8,7 @@ The following is required to use the search engine:
 * Approximately 200 GB of local storage
 * One or more computers running a Linux distribution (Ubuntu was used for testing) 
 * Local software installations of:
+  * Java JDK 8 
   * Apache Spark 
   * Apache Maven
   * Scala
