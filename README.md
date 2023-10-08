@@ -18,7 +18,7 @@ The search engine takes a text query as input and outputs links to Wikipedia art
 
 The search engine is adapted from an assignment posted online for a big data course (https://hackmd.io/@9NHMbs3cSOmGDKDUbhIviQ/H1LM2fR5m?type=view)
 
-#Setup
+# Setup
 Download and decompress the Wikipedia backup
 Download and unzip the repo
 Open /wikipedia-processing/src/main/scala/com/brian/App.scala in a text editor
