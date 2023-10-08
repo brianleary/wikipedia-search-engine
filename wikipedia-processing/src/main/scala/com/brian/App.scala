@@ -10,6 +10,8 @@ import org.apache.spark.sql.functions.col
 object App {
 
   def main(args: Array[String]) {
+    val filepath = "/home/brian/software/enwiki-20230901-pages-articles-multistream.xml"
+
     val spark = SparkSession.builder()
       //.master( master = "local[*]") // comment out before packaging
       .getOrCreate()
@@ -18,8 +20,7 @@ object App {
     import spark.implicits._
 
     // Read in every page from the XML file
-    //val df = spark.read.option("rowTag", "page").xml("/home/brian/software/enwiki-20230901-pages-articles-multistream.xml")
-    val df = spark.read.format("com.databricks.spark.xml").option("rowTag", "page").load("/home/brian/software/enwiki-20230901-pages-articles-multistream.xml")
+    val df = spark.read.format("com.databricks.spark.xml").option("rowTag", "page").load(filepath)
 
     // Create dataframe with only ID, title, and text
     // Drop null values from any of these columns
