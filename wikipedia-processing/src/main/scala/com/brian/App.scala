@@ -12,7 +12,7 @@ object App {
     val filepath = "/home/brian/software/enwiki-20230901-pages-articles-multistream.xml"
 
     val spark = SparkSession.builder()
-      .master( master = "local[*]") // comment out before packaging
+      //.master( master = "local[*]") // comment out before packaging
       .getOrCreate()
 
     // This has to occur after the Spark session is created
