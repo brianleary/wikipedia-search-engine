@@ -19,7 +19,7 @@ object App {
     import spark.implicits._
 
     // Read in every page from the XML file
-    val df = spark.read.format("com.databricks.spark.xml").option("rowTag", "page").load(filepath).cache()
+    val df = spark.read.format("com.databricks.spark.xml").option("rowTag", "page").load(filepath)
 
     // Create dataframe with only ID, title, and text
     val df2 = df.select(col("id").alias("_id"),col("title"),col("revision.text._value").alias("text"))
