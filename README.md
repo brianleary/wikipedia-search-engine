@@ -25,7 +25,7 @@ Download and unzip the repo
 
 Open /wikipedia-processing/src/main/scala/com/brian/App.scala in a text editor
 
-Edit line 13 to point to the filepath of the decompressed Wikipedia backup
+Edit line 12 to point to the filepath of the decompressed Wikipedia backup (I attempted to set it up as a command argument but this copied the file to a temp directory, slowing processing)
 ```
 val filepath = "PATH_TO_FILE"
 ```
