@@ -3,7 +3,7 @@ A basic search engine to be used on an XML backup of Wikipedia. Uses Apache Spar
 
 The following is required to use the search engine: 
 * A backup of Wikipedia’s English database
-  * Obtainable from en.wikipedia.org/wiki/Wikipedia:Database_download
+  * Obtainable from [Wikipedia Database Download](https://en.wikipedia.org/wiki/Wikipedia:Database_download)
   * enwiki-YYYYMMDD-pages-articles-multistream.xml.bz2
 * Approximately 200 GB of local storage
 * One or more computers running a Linux distribution (Ubuntu was used for testing) 
