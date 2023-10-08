@@ -1,20 +1,17 @@
 # Wikipedia Search Engine
-A basic search engine to be used on an XML backup of Wikipedia. Uses PySpark to speed up results.
+A basic search engine to be used on an XML backup of Wikipedia. Uses Apache Spark to speed up processing times
 
 The following is required to use the search engine: 
-A backup of Wikipedia’s English database 
-
-A GitHub account
-
-A file archiver utility, such as 7-Zip
-
-A local Python installation
-
-Approximately 100 GB of local storage
-
-A local installation of Jupyter Notebook and PySpark
-
-Multiple computers (optional for full PySpark deployment)
+* A backup of Wikipedia’s English database
+** Obtainable from en.wikipedia.org/wiki/Wikipedia:Database_download
+* Approximately 200 GB of local storage
+* One or more computers running a Linux distribution (Ubuntu was used for testing) 
+* Local software installations of:
+    ** Apache Spark 
+    ** Apache Maven
+    ** Scala
+    ** Intellij IDEA Community
+    ** Databricks Spark-XML
 
 The search engine takes a text query as input and outputs links to Wikipedia articles that best fit the query. It consists of two primary parts: an indexing engine and a ranking engine. The indexing engine processes the searchable documents (Wikipedia articles), while the ranking engine processes the search query and runs it against the results from the indexing engine. Finally, the documents that best fit the search query are returned.
 
