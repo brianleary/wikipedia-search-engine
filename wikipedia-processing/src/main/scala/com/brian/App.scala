@@ -2,7 +2,6 @@ package com.brian
 
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.col
-//import com.databricks.spark.xml._
 
 /**
  * @author Brian Leary
@@ -13,20 +12,20 @@ object App {
     val filepath = "/home/brian/software/enwiki-20230901-pages-articles-multistream.xml"
 
     val spark = SparkSession.builder()
-      //.master( master = "local[*]") // comment out before packaging
+      .master( master = "local[*]") // comment out before packaging
       .getOrCreate()
 
     // This has to occur after the Spark session is created
     import spark.implicits._
 
     // Read in every page from the XML file
-    val df = spark.read.format("com.databricks.spark.xml").option("rowTag", "page").load(filepath)
+    val df = spark.read.format("com.databricks.spark.xml").option("rowTag", "page").load(filepath).cache()
 
     // Create dataframe with only ID, title, and text
-    // Drop null values from any of these columns
-    // Remove any with the text value beginning with #REDIRECT (only contains a link to another page)
     val df2 = df.select(col("id").alias("_id"),col("title"),col("revision.text._value").alias("text"))
+      // Drop null values from any of these columns
       .na.drop()
+      // Remove any with the text value beginning with #REDIRECT (only contains a link to another page)
       .filter("text not like '#REDIRECT%'")
 
     // Clean up non-word characters
