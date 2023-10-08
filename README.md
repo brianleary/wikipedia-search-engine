@@ -7,11 +7,11 @@ The following is required to use the search engine:
 * Approximately 200 GB of local storage
 * One or more computers running a Linux distribution (Ubuntu was used for testing) 
 * Local software installations of:
-    ** Apache Spark 
-    ** Apache Maven
-    ** Scala
-    ** Intellij IDEA Community
-    ** Databricks Spark-XML
+  * Apache Spark 
+  * Apache Maven
+  * Scala
+  * Intellij IDEA Community
+  * Databricks Spark-XML
 
 The search engine takes a text query as input and outputs links to Wikipedia articles that best fit the query. It consists of two primary parts: an indexing engine and a ranking engine. The indexing engine processes the searchable documents (Wikipedia articles), while the ranking engine processes the search query and runs it against the results from the indexing engine. Finally, the documents that best fit the search query are returned.
 
