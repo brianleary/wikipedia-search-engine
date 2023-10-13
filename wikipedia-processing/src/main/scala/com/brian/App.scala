@@ -2,7 +2,6 @@ package com.brian
 
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.col
-import org.elasticsearch.spark.sql._
 
 /**
  * @author Brian Leary
@@ -16,25 +15,13 @@ object App {
       .master( master = "local[*]") // comment out before packaging
       .getOrCreate()
 
-    /* Possible config for Elasticsearch (may not be needed)
-    val spark = SparkSession
-      .builder()
-      .appName("WriteToES")
-      .master("local[*]")
-      //.config("spark.es.nodes", "<IP-OF-ES-NODE>")
-      //.config("spark.es.port", "<ES-PORT>")
-      //.config("spark.es.nodes.wan.only", "true") //Needed for ES on AWS
-      .getOrCreate()
-
-     */
-
     // This has to occur after the Spark session is created
     import spark.implicits._
 
     // Read in every page from the XML file
     val df = spark.read.format("com.databricks.spark.xml").option("rowTag", "page").load(filepath)
 
-    // Create dataframe with only ID, title, and text
+    // Extract ID, title, and text into new dataframe
     val df2 = df.select(col("id").alias("_id"),col("title"),col("revision.text._value").alias("text"))
       // Drop null values from any of these columns
       .na.drop()
@@ -59,7 +46,7 @@ object App {
 
     val df3 = df3map.toDF("_id", "title", "text")
 
-    // Print to CSV files
-    df3.write.csv("wikipedia")
+    // Print to JSON files
+    df3.write.json("wikipedia")
   }
 }
