@@ -44,7 +44,7 @@ object App {
       (row.getLong(0), row.getString(1), cleanString)
     })
 
-    val df3 = df3map.toDF("_id", "title", "text")
+    val df3 = df3map.toDF("docid", "title", "text")
 
     // Print to JSON files
     df3.write.json("wikipedia")
