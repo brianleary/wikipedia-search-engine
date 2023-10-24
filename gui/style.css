@@ -1,0 +1,72 @@
+@charset "UTF-8";
+
+/*
+CS 3312, spring 2018
+Studio 1
+YOUR NAMES: Brian Leary, Joseph Lynch
+*/
+
+/* Fixing the box-sizing attribute will make sizing boxes easier. */
+html {
+   box-sizing: border-box;
+}
+
+/* Normally the * selector is smart to avoid, but for this purpose it's fine. */
+*, *:before, *:after {
+   box-sizing: inherit;
+}
+
+body {
+   /* Set the background color of the whole document to a light gray. */
+   background-color: rgb(238, 238, 238);
+}
+
+/* Make a major heading stand out. */
+h1 {
+   background-color: rgb(221, 238, 255);
+   color: rgb(68, 0, 17);
+   font-family: Futura, "Century Gothic", Geneva, Tahoma, Verdana, Arial, sans-serif;
+   font-size: 250%;
+   font-weight: bold;
+   margin-left: 50px;
+   margin-right: 50px;
+   text-align: center;
+}
+
+/* Center all h2 elements. */
+h2 {
+   text-align: center;
+}
+
+/* Style the original greeting. */
+.greeting {
+   border-color: rgb(68, 0, 17);
+   border-style: solid;
+   border-width: 1px;
+   padding: 9px;
+}
+
+/* Add style to a greeting that's become more enthusiastic. */
+.greeting.enthusiastic {
+   background-color: rgb(68, 0, 17);
+   color: rgb(255, 255, 255);
+   font-size: 150%;
+   font-style: italic;
+}
+
+/* Style the web app idea paragraph. Center it in the middle of the window. */
+.info {
+   background-color: rgb(0, 0, 0);
+   color: rgb(145, 221, 255);
+   font-size: 100%;
+   font-family: Futura, "Century Gothic", Geneva, Tahoma, Verdana, Arial, sans-serif;
+   margin-left: 200px;
+   margin-right: 200px;
+   padding: 15px;
+}
+
+/* Re-style the web app idea paragraph if it is clicked. */
+.info.clicked {
+   font-family: cursive;
+   font-size: 100%;
+}
