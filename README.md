@@ -1,3 +1,5 @@
+# WORK IN PROGRESS
+
 # Wikipedia Search Engine
 A basic search engine to be used on an XML backup of Wikipedia. Uses Apache Spark to speed up processing times
 
