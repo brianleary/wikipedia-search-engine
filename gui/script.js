@@ -13,9 +13,60 @@ document.addEventListener('DOMContentLoaded', function () {
    submitqueryButton = document.querySelector('#submit-query');
    queryOutputElement = document.querySelector('#query-output');
 
-   // Make things happen when a user clicks on the button element.
+   // API Fetch Function
+   // https://www.youtube.com/watch?v=zUcc4vW-jsI
+   function searchAPICall(url, dataToSend) {
+      fetch(url, {
+         method: 'POST',
+         body: JSON.stringify(dataToSend),
+         mode: 'cors',
+         headers: new Headers({
+            'Content-Type': 'application/json'
+         })
+      })
+      // Convert response to JSON
+      .then(response => {
+         return response.json();
+      })
+      .then(data => {
+         // Log response to console
+         console.log('Response', data);
+
+         // Clear output for each search
+         queryOutputElement.textContent = ""
+
+         if (data.hits.hits.length === 0) {
+            // If array size is zero, there were no search results
+            queryOutputElement.textContent = "No results"
+         } else {
+            // There were results
+            // Access data.hits.hits, which is an array of the search results
+            // Create HTML table and display results
+            queryOutputElement.insertAdjacentHTML('beforeend', `<table>`);
+
+            // Loop through each result and create a row in the table
+            data.hits.hits.map(searchResult => {
+               // Create table row element
+               queryOutputElement.insertAdjacentHTML('beforeend', `<tr>`);
+               const markup = `<td>${searchResult._score}</td>`
+               queryOutputElement.insertAdjacentHTML('beforeend', markup);
+               // End table row element
+               queryOutputElement.insertAdjacentHTML('beforeend', `</tr>`);
+            })
+
+            // End table element
+            queryOutputElement.insertAdjacentHTML('beforeend', `</table>`);
+         }
+      })
+      // Catch and log error to console
+      .catch(error => console.log(error));
+   }
+
+   // Search query button element handler
    submitqueryButton.addEventListener('click', function () {
-      var query, result;
+      var query, dataToSend, url;
+
+      url = "http://localhost:9200/articlesindex/_search";
 
       // Get the string value out of the input textbox.
       query = queryInputElement.value;
@@ -24,26 +75,12 @@ document.addEventListener('DOMContentLoaded', function () {
          // The user didn't input a query, so use a default.
          queryOutputElement.textContent = 'Please type in a search query';
       } else {
-         // The user did input a query, so use it.
+         // The user did input a query, so use it         
+         // Create JSON object for search query
+         dataToSend = {"query": { "match": { "text": { "query": query }}}}
 
-         var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
-         var url = "http://localhost:9200/articlesindex/_search";
-         xmlhttp.open("POST", url);
-         xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-         xmlhttp.send(JSON.stringify({"query": { "match": { "text": { "query": query}}}}));
-         xmlhttp.onload = () => {
-            console.log(xmlhttp);
-            if (xmlhttp.status === 200) {
-               result = xmlhttp.response;
-            } else {
-               result = 'API error'
-            };
-         }
-         
-
-         // Doesn't want to show the text on the page for some reason
-         queryOutputElement.textContent = result;
+         //result = searchAPICall(url, dataToSend)
+         searchAPICall(url, dataToSend)
       }
    }, false);
-
 }, false);
