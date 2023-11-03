@@ -1,4 +1,5 @@
 /*jslint browser: true, indent: 3 */
+/*jshint esversion: 6 */
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -14,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function () {
    queryOutputElement = document.querySelector('#query-output');
 
    // API Fetch Function
-   // https://www.youtube.com/watch?v=zUcc4vW-jsI
    function searchAPICall(url, dataToSend) {
       fetch(url, {
          method: 'POST',
@@ -33,11 +33,11 @@ document.addEventListener('DOMContentLoaded', function () {
          console.log('Response', data);
 
          // Clear output for each search
-         queryOutputElement.textContent = ""
+         queryOutputElement.textContent = "";
 
          if (data.hits.hits.length === 0) {
             // If array size is zero, there were no search results
-            queryOutputElement.textContent = "No results"
+            queryOutputElement.textContent = "No results";
          } else {
             // There were results
 
@@ -55,17 +55,17 @@ document.addEventListener('DOMContentLoaded', function () {
                const markup = `<td class="tableCell">${searchResult._score}</td>
                                <td class="tableCell">${searchResult._source.title}</td>
                                <td class="tableCell"><a href=${urlString}>Go to page</a></td>
-                               <td class="tableCell">${searchResult._source.text.substring(0, 250)}</td>`
+                               <td class="tableCell">${searchResult._source.text.substring(0, 250)}</td>`;
                queryOutputElement.insertAdjacentHTML('beforeend', markup);
-            })
+            });
          }
       })
       // Catch and log error to console
       .catch(error => console.log(error));
    }
 
-   // Search query button element handler
-   submitqueryButton.addEventListener('click', function () {
+   // Function called when searching (called by eventlisteners)
+   function searchQueryFunction() {
       var query, dataToSend, url;
 
       url = "http://localhost:9200/articlesindex/_search";
@@ -74,15 +74,28 @@ document.addEventListener('DOMContentLoaded', function () {
       query = queryInputElement.value;
 
       if (query.length === 0) {
-         // The user didn't input a query, so use a default.
+         // No query inputted
          queryOutputElement.textContent = 'Please type in a search query';
       } else {
-         // The user did input a query, so use it         
+         // Query inputted
          // Create JSON object for search query
-         dataToSend = {"query": { "match": { "text": { "query": query }}}}
+         dataToSend = {"query": { "match": { "text": { "query": query }}}};
 
          //result = searchAPICall(url, dataToSend)
-         searchAPICall(url, dataToSend)
+         searchAPICall(url, dataToSend);
+      }
+   }
+
+   // Handle pressing enter on textbox
+   queryInputElement.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+         searchQueryFunction();
       }
    }, false);
+
+   // Handle clicking on button
+   submitqueryButton.addEventListener('click', function () {
+      searchQueryFunction();
+   }, false);
+
 }, false);
