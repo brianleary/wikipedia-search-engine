@@ -1,19 +1,8 @@
 @charset "UTF-8";
 
-/*
-CS 3312, spring 2018
-Studio 1
-YOUR NAMES: Brian Leary, Joseph Lynch
-*/
-
 /* Fixing the box-sizing attribute will make sizing boxes easier. */
 html {
    box-sizing: border-box;
-}
-
-/* Normally the * selector is smart to avoid, but for this purpose it's fine. */
-*, *:before, *:after {
-   box-sizing: inherit;
 }
 
 body {
@@ -38,8 +27,15 @@ h2 {
    text-align: center;
 }
 
-/* Style the original greeting. */
-.greeting {
+/* Style the original results table. */
+.resultsTable {
+   border-color: rgb(68, 0, 17);
+   border-style: solid;
+   border-width: 1px;
+   padding: 9px;
+}
+
+.tableCell{
    border-color: rgb(68, 0, 17);
    border-style: solid;
    border-width: 1px;
@@ -52,21 +48,4 @@ h2 {
    color: rgb(255, 255, 255);
    font-size: 150%;
    font-style: italic;
-}
-
-/* Style the web app idea paragraph. Center it in the middle of the window. */
-.info {
-   background-color: rgb(0, 0, 0);
-   color: rgb(145, 221, 255);
-   font-size: 100%;
-   font-family: Futura, "Century Gothic", Geneva, Tahoma, Verdana, Arial, sans-serif;
-   margin-left: 200px;
-   margin-right: 200px;
-   padding: 15px;
-}
-
-/* Re-style the web app idea paragraph if it is clicked. */
-.info.clicked {
-   font-family: cursive;
-   font-size: 100%;
 }

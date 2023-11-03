@@ -40,22 +40,24 @@ document.addEventListener('DOMContentLoaded', function () {
             queryOutputElement.textContent = "No results"
          } else {
             // There were results
-            // Access data.hits.hits, which is an array of the search results
-            // Create HTML table and display results
-            queryOutputElement.insertAdjacentHTML('beforeend', `<table>`);
 
+            // Create table header
+            queryOutputElement.insertAdjacentHTML('beforeend', `<th class="tableCell">Document Score</td>
+                                                                <th class="tableCell">Document Title</td>
+                                                                <th class="tableCell">Link</td>
+                                                                <th class="tableCell">Text Preview</td>`);
+
+            // Access data.hits.hits, which is an array of the search results
             // Loop through each result and create a row in the table
             data.hits.hits.map(searchResult => {
                // Create table row element
-               queryOutputElement.insertAdjacentHTML('beforeend', `<tr>`);
-               const markup = `<td>${searchResult._score}</td>`
+               var urlString = "https://en.wikipedia.org/wiki/" + searchResult._source.title.replace(' ', '_');
+               const markup = `<td class="tableCell">${searchResult._score}</td>
+                               <td class="tableCell">${searchResult._source.title}</td>
+                               <td class="tableCell"><a href=${urlString}>Go to page</a></td>
+                               <td class="tableCell">${searchResult._source.text.substring(0, 250)}</td>`
                queryOutputElement.insertAdjacentHTML('beforeend', markup);
-               // End table row element
-               queryOutputElement.insertAdjacentHTML('beforeend', `</tr>`);
             })
-
-            // End table element
-            queryOutputElement.insertAdjacentHTML('beforeend', `</table>`);
          }
       })
       // Catch and log error to console
