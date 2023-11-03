@@ -30,12 +30,14 @@ The search engine is adapted from an assignment posted online for a big data cou
 ```
 val filepath = "PATH_TO_FILE"
 ```
-5.Open a terminal in the wikipedia-processing subfolder
+5. Open a terminal in the wikipedia-processing subfolder
 6. Run the following the compile the maven package
 ```
 mvn clean package
 ```
-6. Run the following to run the package. This will convert the XML file to a CSV file containing each article's ID, title, and text. The text only contains words and whitespace and has stop words removed
+6. Run the following to run the package. This will convert the XML file to a CSV file containing each article's ID, title, and text. The text only contains words and whitespace and has stop words removed. The script took about 55 minutes to run during testing.
 ```
 spark-submit --master "local[*]" --packages com.databricks:spark-xml_2.12:0.12.0 --class com.brian.App target/wikipedia-processing-1.0-SNAPSHOT-jar-with-dependencies.jar 
 ```
+
+7. Docker instructions
