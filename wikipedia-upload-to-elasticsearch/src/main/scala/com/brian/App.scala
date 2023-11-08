@@ -13,10 +13,6 @@ object App {
     val filepath = "../wikipedia-processing/wikipedia"
     val articlesPath = "articlesindex"
 
-    // https://stackoverflow.com/questions/45804956/executing-curl-command-in-scala
-    // https://www.elastic.co/blog/found-elasticsearch-mapping-introduction
-    // https://stackoverflow.com/questions/57235170/curl-3-globbing-nested-brace-in-column-189-when-sending-put-request-to-goog
-
     // Define Elasticsearch index mapping
     val json = """
     {
