@@ -22,9 +22,24 @@ h1 {
    text-align: center;
 }
 
+/* Anchor footer to bottom of page. */
+footer {
+   position: absolute;
+   bottom: 0;
+   width: 100%;
+   height: 100px;
+   text-align: center;
+   font-size: 200%;
+}
+
+/* Make input text boxes longer. */
+input {
+   width: 50%;
+ }
+
 /* Center all h2 elements. */
 h2 {
-   text-align: center;
+   text-align: left;
 }
 
 /* Style the original results table. */

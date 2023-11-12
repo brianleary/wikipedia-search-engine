@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en-US"><head>
+
+<meta charset="UTF-8" />
+<title>Wikipedia Search Engine</title>
+
+<!-- Import CSS stylesheet -->
+<link href="style.css" rel="stylesheet" />
+
+</head><body>
+
+<!-- Page content goes here.  Elements can be nested inside other elements. -->
+<h1>Add Article</h1>
+
+<p>
+   <h3>Article ID (integer):</h2>
+   <input id="id-input" type="text">
+   <h3>Article Title:</h2>
+   <input id="title-input" type="text" />
+   <h3>Article Text:</h2>
+   <textarea id="text-input" rows="15" cols="75"></textarea>
+</p>
+
+<p>
+   <button id="submit-article" type="button">Submit Article</button>
+</p>
+
+<p id="results">
+   <table id="article-output"></table>
+</p>
+
+<footer id = "linkToOtherPage" >
+   <a href="index.html">Return to Search Engine</a>
+</footer>
+
+<!-- Import a JavaScript script to add interactivity to the page. -->
+<script src="addScript.js"></script>
+
+</body></html>
