@@ -7,7 +7,9 @@ document.addEventListener('DOMContentLoaded', function () {
    'use strict';
 
    // Declare this function's local variables.
-   var queryInputElement, queryOutputElement, submitqueryButton, addAndButton, addOrButton, addNotButton, searchTextBoxElement;
+   var queryInputElement, queryOutputElement, searchTextBoxElement,
+       submitqueryButton, addAndButton, addOrButton, addNotButton,
+       advancedSearchActive, andClauseActive, orClauseActive, notClauseActive;
 
    // Find all needed elements and save them in variables.
    queryInputElement = document.querySelector('#query-input');
@@ -22,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
    function searchAPICall(url, dataToSend) {
       fetch(url, {
          method: 'POST',
+         // May need to change to .parse
          body: JSON.stringify(dataToSend),
          mode: 'cors',
          headers: new Headers({
@@ -83,22 +86,105 @@ document.addEventListener('DOMContentLoaded', function () {
       } else {
          // Query inputted
          // Create JSON object for search query
-         // Basic query used for testing
-         // dataToSend = {"query": { "match": { "text": { "query": query }}}};
 
          // Build more advanced query with AND/OR support
-         dataToSend = '{"query": {"should": [{"bool": {"must": [{"match": { "';
+         // Include initial text box value as first AND clause
+         dataToSend = '{"query": { "bool": { "should": [{"bool": {"must": [{"match": { "text": "' + query + '"}}';
 
-         var words = query.split(" ");
+         // Start building advanced API call
+         if (advancedSearchActive) {
 
-         for (var i = 0; i < words.length; i += 1) {
-            if (words[i] === "and") {
+            // Add additional AND clauses if needed
+            if (andClauseActive) {
+               var elements = document.getElementsByClassName("and-clause");
 
-            } else if (words[i] === "or") {
+               // https://medium.com/coding-beauty/javascript-remove-empty-strings-from-array-4b6c81f8faec#:~:text=To%20remove%20empty%20strings%20from%20an%20array%20in%20JavaScript%2C%20call,array%20excluding%20the%20empty%20strings.
+               // Remove any empty elements
+               var elementTextValues = []
 
-            } else {
-               dataToSend += words[i] + " ";
+               for(var i = 0; i < elements.length; i++) {
+                  elementTextValues[i] = elements[i].value.toLowerCase()
+               }
+
+               elementTextValues = elementTextValues.filter((str) => str != '')
+
+               // Loop through text value array (if there are none the loop doesn't run)
+               for(var i = 0; i < elementTextValues.length; i++) {
+                  dataToSend += ',{"match": { "text": "' + elementTextValues[i] + '"}}';
+               }
             }
+
+            // Add closing brackets for AND clauses
+            dataToSend += ']';
+            if (!notClauseActive) {
+               dataToSend += '}}';
+            }
+
+
+
+            // Add additional NOT clauses if needed
+            if (notClauseActive) {
+               var elements = document.getElementsByClassName("not-clause");
+
+               // Remove any empty elements
+               var elementTextValues = []
+
+               for(var i = 0; i < elements.length; i++) {
+                  elementTextValues[i] = elements[i].value.toLowerCase()
+               }
+
+               elementTextValues = elementTextValues.filter((str) => str != '')
+
+               // Loop through text value array (if there are none the loop doesn't run)
+               for(var i = 0; i < elementTextValues.length; i++) {
+                  if (i == 0) {
+                     // Add beginning of NOT clauses if on first element
+                     dataToSend += ',"must_not": ['
+                  } else {
+                     // Add comma if there are multiple NOT clauses
+                     dataToSend += ',';
+                  }
+
+                  dataToSend += '{"match": { "text": "' + elementTextValues[i] + '"}}';
+               }
+
+               if (elementTextValues.length != 0) {
+                  // Add closing brackets for NOT clauses
+                  dataToSend += ']}}';
+               }
+            }
+
+            
+
+
+
+            // Add additional OR clauses if needed
+            if (orClauseActive) {
+               var elements = document.getElementsByClassName("or-clause");
+
+               // Remove any empty elements
+               var elementTextValues = []
+
+               for(var i = 0; i < elements.length; i++) {
+                  elementTextValues[i] = elements[i].value.toLowerCase()
+               }
+
+               elementTextValues = elementTextValues.filter((str) => str != '')
+
+               for(var i = 0; i < elementTextValues.length; i++) {
+                  // Check for any empty query values
+                  if (elements[i].value) {
+                     dataToSend += ',{"match": { "text": "' + elementTextValues[i] + '"}}';
+                  }  
+               }
+            }
+
+            // Add closing brackets
+            dataToSend += ']}}}';
+            
+         } else {
+            // If no extra text boxes were added, just run the basic query
+            dataToSend = {"query": { "match": { "text": { "query": query }}}};
          }
 
          queryOutputElement.textContent = dataToSend;
@@ -123,22 +209,28 @@ document.addEventListener('DOMContentLoaded', function () {
    // Handle clicking on "Add AND" button
    addAndButton.addEventListener('click', function () {
       const markup = `<h3>AND</h3>
-                      <input id="and-clause" type="text" />`;
+                      <input class="and-clause" type="text" />`;
       searchTextBoxElement.insertAdjacentHTML('beforeend', markup);
+      advancedSearchActive = true;
+      andClauseActive = true;
    }, false);
 
    // Handle clicking on "Add OR" button
    addOrButton.addEventListener('click', function () {
       const markup = `<h3>OR</h3>
-                      <input id="or-clause" type="text" />`;
+                      <input class="or-clause" type="text" />`;
       searchTextBoxElement.insertAdjacentHTML('beforeend', markup);
+      advancedSearchActive = true;
+      orClauseActive = true;
    }, false);
 
    // Handle clicking on "Add NOT" button
    addNotButton.addEventListener('click', function () {
       const markup = `<h3>NOT</h3>
-                      <input id="not-clause" type="text" />`;
+                      <input class="not-clause" type="text" />`;
       searchTextBoxElement.insertAdjacentHTML('beforeend', markup);
+      advancedSearchActive = true;
+      notClauseActive = true;
    }, false);
 
 }, false);
