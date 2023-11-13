@@ -10,7 +10,7 @@ body {
    background-color: rgb(238, 238, 238);
 }
 
-/* Make a major heading stand out. */
+/* Make heading stand out. */
 h1 {
    background-color: rgb(221, 238, 255);
    color: rgb(68, 0, 17);
@@ -35,7 +35,7 @@ footer {
 /* Make input text boxes longer. */
 input {
    width: 50%;
- }
+}
 
 /* Center all h2 elements. */
 h2 {
@@ -50,17 +50,10 @@ h2 {
    padding: 9px;
 }
 
+/* Format table cells*/
 .tableCell{
    border-color: rgb(68, 0, 17);
    border-style: solid;
    border-width: 1px;
    padding: 9px;
-}
-
-/* Add style to a greeting that's become more enthusiastic. */
-.greeting.enthusiastic {
-   background-color: rgb(68, 0, 17);
-   color: rgb(255, 255, 255);
-   font-size: 150%;
-   font-style: italic;
 }

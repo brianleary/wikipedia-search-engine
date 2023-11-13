@@ -7,12 +7,16 @@ document.addEventListener('DOMContentLoaded', function () {
    'use strict';
 
    // Declare this function's local variables.
-   var queryInputElement, queryOutputElement, submitqueryButton;
+   var queryInputElement, queryOutputElement, submitqueryButton, addAndButton, addOrButton, addNotButton, searchTextBoxElement;
 
    // Find all needed elements and save them in variables.
    queryInputElement = document.querySelector('#query-input');
    submitqueryButton = document.querySelector('#submit-query');
    queryOutputElement = document.querySelector('#query-output');
+   searchTextBoxElement = document.querySelector('#searchTextBoxArea');
+   addAndButton = document.querySelector('#add-and');
+   addOrButton = document.querySelector('#add-or');
+   addNotButton = document.querySelector('#add-not');
 
    // API Fetch Function
    function searchAPICall(url, dataToSend) {
@@ -80,9 +84,27 @@ document.addEventListener('DOMContentLoaded', function () {
          // Query inputted
          // Create JSON object for search query
          // Basic query used for testing
-         dataToSend = {"query": { "match": { "text": { "query": query }}}};
+         // dataToSend = {"query": { "match": { "text": { "query": query }}}};
 
-         searchAPICall(url, dataToSend);
+         // Build more advanced query with AND/OR support
+         dataToSend = '{"query": {"should": [{"bool": {"must": [{"match": { "';
+
+         var words = query.split(" ");
+
+         for (var i = 0; i < words.length; i += 1) {
+            if (words[i] === "and") {
+
+            } else if (words[i] === "or") {
+
+            } else {
+               dataToSend += words[i] + " ";
+            }
+         }
+
+         queryOutputElement.textContent = dataToSend;
+
+         // Uncomment when ready for testing
+         //searchAPICall(url, dataToSend);
       }
    }
 
@@ -96,6 +118,27 @@ document.addEventListener('DOMContentLoaded', function () {
    // Handle clicking on search button
    submitqueryButton.addEventListener('click', function () {
       searchQueryFunction();
+   }, false);
+
+   // Handle clicking on "Add AND" button
+   addAndButton.addEventListener('click', function () {
+      const markup = `<h3>AND</h3>
+                      <input id="and-clause" type="text" />`;
+      searchTextBoxElement.insertAdjacentHTML('beforeend', markup);
+   }, false);
+
+   // Handle clicking on "Add OR" button
+   addOrButton.addEventListener('click', function () {
+      const markup = `<h3>OR</h3>
+                      <input id="or-clause" type="text" />`;
+      searchTextBoxElement.insertAdjacentHTML('beforeend', markup);
+   }, false);
+
+   // Handle clicking on "Add NOT" button
+   addNotButton.addEventListener('click', function () {
+      const markup = `<h3>NOT</h3>
+                      <input id="not-clause" type="text" />`;
+      searchTextBoxElement.insertAdjacentHTML('beforeend', markup);
    }, false);
 
 }, false);
