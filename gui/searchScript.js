@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
    function searchAPICall(url, dataToSend) {
       fetch(url, {
          method: 'POST',
-         body: JSON.stringify(dataToSend),
+         body: dataToSend,
          mode: 'cors',
          headers: new Headers({
             'Content-Type': 'application/json'
@@ -80,7 +80,8 @@ document.addEventListener('DOMContentLoaded', function () {
          // Query inputted
          // Create JSON object for search query
          // Basic query used for testing
-         dataToSend = {"query": { "match": { "text": { "query": query }}}};
+         dataToSend = '{"query": { "match": { "text": { "query": "' + query + '"}}}}';
+         console.log(dataToSend)
 
          searchAPICall(url, dataToSend);
       }

@@ -24,8 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
    function searchAPICall(url, dataToSend) {
       fetch(url, {
          method: 'POST',
-         // May need to change to .parse
-         body: JSON.stringify(dataToSend),
+         body: dataToSend,
          mode: 'cors',
          headers: new Headers({
             'Content-Type': 'application/json'
@@ -184,13 +183,13 @@ document.addEventListener('DOMContentLoaded', function () {
             
          } else {
             // If no extra text boxes were added, just run the basic query
-            dataToSend = {"query": { "match": { "text": { "query": query }}}};
+            dataToSend = '{"query": { "match": { "text": { "query": "' + query + '"}}}}';
          }
 
-         queryOutputElement.textContent = dataToSend;
+         console.log(dataToSend)
 
          // Uncomment when ready for testing
-         //searchAPICall(url, dataToSend);
+         searchAPICall(url, dataToSend);
       }
    }
 
