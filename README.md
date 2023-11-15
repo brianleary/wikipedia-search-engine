@@ -20,7 +20,7 @@ The search engine takes a text query as input and outputs links to Wikipedia art
 
 The search engine is adapted from an assignment posted online for a big data course: [HackMD Assignment](https://hackmd.io/@9NHMbs3cSOmGDKDUbhIviQ/H1LM2fR5m?type=view)
 
-# Setup
+## Setup
 1. Download and decompress the Wikipedia backup
 2. Download and unzip the repo
 3. Open /wikipedia-processing/src/main/scala/com/brian/App.scala in a text editor
@@ -59,7 +59,7 @@ spark-submit --class com.brian.App --master "local[*]" --conf spark.es.nodes=loc
 ```
 
 
-# Usage
+## Usage
 Once the script finishes running, open the gui subfolder. Open one of the HTML documents and test if the search engine is working:
   * search.html - Allows basic search queries
   * advancedSearch.html - Allows searches with logic operators AND, OR, and/or NOT
