@@ -37,7 +37,26 @@ mvn clean package
 ```
 6. Run the following to run the package. This will convert the XML file to a CSV file containing each article's ID, title, and text. The text only contains words and whitespace and has stop words removed. The script took about 55 minutes to run during testing.
 ```
-spark-submit --master "local[*]" --packages com.databricks:spark-xml_2.12:0.12.0 --class com.brian.App target/wikipedia-processing-1.0-SNAPSHOT-jar-with-dependencies.jar 
+spark-submit --master "local[*]" --packages com.databricks:spark-xml_2.12:0.12.0 --class com.brian.App target/wikipedia-processing-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
-7. Docker instructions
+7. Confirm Docker services are running (start Docker desktop)
+8. Open a terminal in the elasticsearch subfolder
+9. Run the following to start the Elasticsearch Docker image
+```
+docker-compose up -d
+```
+10. Open a terminal in the wikipedia-upload-to-elasticsearch subfolder
+11. Run the following the compile the maven package
+```
+mvn clean package
+```
+12. Run the following to run the package. This will configure the Elasticsearch index and upload the processed Wikipedia articles. The script took about 30 minutes to run during testing.
+```
+spark-submit --class com.brian.App --master "local[*]" --conf spark.es.nodes=localhost --conf spark.es.port=9200 --conf spark.es.nodes.wan.only=true target/wikipedia-upload-to-elasticsearch-1.0-SNAPSHOT-jar-with-dependencies.jar
+```
+13. Once the script finishes running, open the gui subfolder
+14. Open one of the HTML documents and test if the search engine is working:
+  * search.html - Allows basic search queries
+  * advancedSearch.html - Allows searches with logic operators AND, OR, and/or NOT
+  * addPage.html - Allows manually adding additional articles
