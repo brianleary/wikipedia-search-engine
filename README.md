@@ -2,11 +2,11 @@
 A basic search engine to be used on an XML backup of Wikipedia. Runs locally on a Linux computer. Uses Apache Spark to speed up processing times, and Elasticsearch to store the data for querying. Includes a simple GUI made of HTML pages that make API calls to the Elasticsearch index.
 
 The following is required to use the search engine: 
+* A computer running a Linux distribution (Ubuntu was used for testing)
+* Approximately 200 GB of local storage
 * A backup of Wikipedia’s English database
   * Obtainable from [Wikipedia Database Download](https://en.wikipedia.org/wiki/Wikipedia:Database_download)
   * enwiki-YYYYMMDD-pages-articles-multistream.xml.bz2
-* Approximately 200 GB of local storage
-* A computer running a Linux distribution (Ubuntu was used for testing) 
 * Local software installations of:
   * Java JDK 8
   * Apache Spark
@@ -18,7 +18,7 @@ The following is required to use the search engine:
 
 The search engine takes a text query as input and outputs links to Wikipedia articles that best fit the query.
 
-The search engine is adapted from an assignment posted online for a big data course [HackMD Assignment](https://hackmd.io/@9NHMbs3cSOmGDKDUbhIviQ/H1LM2fR5m?type=view)
+The search engine is adapted from an assignment posted online for a big data course: [HackMD Assignment](https://hackmd.io/@9NHMbs3cSOmGDKDUbhIviQ/H1LM2fR5m?type=view)
 
 # Setup
 1. Download and decompress the Wikipedia backup
