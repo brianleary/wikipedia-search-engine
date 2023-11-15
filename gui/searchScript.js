@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
          // Create JSON object for search query
          // Basic query used for testing
          dataToSend = '{"query": { "match": { "text": { "query": "' + query + '"}}}}';
-         console.log(dataToSend)
+         console.log(dataToSend);
 
          searchAPICall(url, dataToSend);
       }

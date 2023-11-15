@@ -18,14 +18,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
    // Check if string only contains numbers
    function isNum(string) {
-      return /^[0-9]*$/.test(string);
+      return (/^[0-9]*$/).test(string);
    }
 
    // API Fetch Function
    function addArticleAPICall(url, dataToSend) {
       fetch(url, {
          method: 'POST',
-         body: JSON.stringify(dataToSend),
+         body: dataToSend,
          mode: 'cors',
          headers: new Headers({
             'Content-Type': 'application/json'
@@ -75,9 +75,9 @@ document.addEventListener('DOMContentLoaded', function () {
          articleOutputElement.textContent = 'Please type in text for the article';
       } else {
          // Add article
-         articleOutputElement.textContent = "all fields are valid";
-         dataToSend = {"docid": Number(id), "title": title, "text": text};
-         addArticleAPICall(url, dataToSend)
+         dataToSend = '{"docid": ' +  Number(id) + ', "title": "' + title + '", "text": "' + text + '"}';
+         console.log(dataToSend);
+         addArticleAPICall(url, dataToSend);
       }
    }
 

@@ -97,15 +97,14 @@ document.addEventListener('DOMContentLoaded', function () {
             if (andClauseActive) {
                var elements = document.getElementsByClassName("and-clause");
 
-               // https://medium.com/coding-beauty/javascript-remove-empty-strings-from-array-4b6c81f8faec#:~:text=To%20remove%20empty%20strings%20from%20an%20array%20in%20JavaScript%2C%20call,array%20excluding%20the%20empty%20strings.
                // Remove any empty elements
-               var elementTextValues = []
+               var elementTextValues = [];
 
                for(var i = 0; i < elements.length; i++) {
-                  elementTextValues[i] = elements[i].value.toLowerCase()
+                  elementTextValues[i] = elements[i].value.toLowerCase();
                }
 
-               elementTextValues = elementTextValues.filter((str) => str != '')
+               elementTextValues = elementTextValues.filter((str) => str != '');
 
                // Loop through text value array (if there are none the loop doesn't run)
                for(var i = 0; i < elementTextValues.length; i++) {
@@ -126,19 +125,19 @@ document.addEventListener('DOMContentLoaded', function () {
                var elements = document.getElementsByClassName("not-clause");
 
                // Remove any empty elements
-               var elementTextValues = []
+               var elementTextValues = [];
 
                for(var i = 0; i < elements.length; i++) {
-                  elementTextValues[i] = elements[i].value.toLowerCase()
+                  elementTextValues[i] = elements[i].value.toLowerCase();
                }
 
-               elementTextValues = elementTextValues.filter((str) => str != '')
+               elementTextValues = elementTextValues.filter((str) => str != '');
 
                // Loop through text value array (if there are none the loop doesn't run)
                for(var i = 0; i < elementTextValues.length; i++) {
                   if (i == 0) {
                      // Add beginning of NOT clauses if on first element
-                     dataToSend += ',"must_not": ['
+                     dataToSend += ',"must_not": [';
                   } else {
                      // Add comma if there are multiple NOT clauses
                      dataToSend += ',';
@@ -162,13 +161,13 @@ document.addEventListener('DOMContentLoaded', function () {
                var elements = document.getElementsByClassName("or-clause");
 
                // Remove any empty elements
-               var elementTextValues = []
+               var elementTextValues = [];
 
                for(var i = 0; i < elements.length; i++) {
-                  elementTextValues[i] = elements[i].value.toLowerCase()
+                  elementTextValues[i] = elements[i].value.toLowerCase();
                }
 
-               elementTextValues = elementTextValues.filter((str) => str != '')
+               elementTextValues = elementTextValues.filter((str) => str != '');
 
                for(var i = 0; i < elementTextValues.length; i++) {
                   // Check for any empty query values
@@ -186,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function () {
             dataToSend = '{"query": { "match": { "text": { "query": "' + query + '"}}}}';
          }
 
-         console.log(dataToSend)
+         console.log(dataToSend);
 
          // Uncomment when ready for testing
          searchAPICall(url, dataToSend);
