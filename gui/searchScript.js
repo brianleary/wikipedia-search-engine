@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
       } else {
          // Query inputted
          // Create JSON object for search query
-         // Basic query used for testing
+         // Basic search query
          dataToSend = '{"query": { "match": { "text": { "query": "' + query + '"}}}}';
          console.log(dataToSend);
 
