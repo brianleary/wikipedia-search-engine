@@ -20,7 +20,7 @@ The search engine takes a text query as input and outputs links to Wikipedia art
 
 The search engine is adapted from an assignment posted online for a big data course: [HackMD Assignment](https://hackmd.io/@9NHMbs3cSOmGDKDUbhIviQ/H1LM2fR5m?type=view)
 
-![alt text](https://github.com/brianleary/wikipedia-search-engine/flowchart.png)
+![alt text](https://github.com/brianleary/wikipedia-search-engine/blob/main/flowchart.png)
 
 ## Setup
 1. Download and decompress the Wikipedia backup
