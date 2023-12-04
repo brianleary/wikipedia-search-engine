@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
          articleOutputElement.textContent = 'Please type in text for the article';
       } else {
          // Add article
-         dataToSend = '{"docid": ' +  Number(id) + ', "title": "' + title + '", "text": "' + text + '"}';
+         dataToSend = '{"docid": ' +  Number(id) + ', "title": "' + title.replace(new RegExp('"', 'g'), "'") + '", "text": "' + text.replace(new RegExp('"', 'g'), "'") + '"}';
          console.log(dataToSend);
          addArticleAPICall(url, dataToSend);
       }

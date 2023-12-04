@@ -20,6 +20,11 @@ document.addEventListener('DOMContentLoaded', function () {
    addOrButton = document.querySelector('#add-or');
    addNotButton = document.querySelector('#add-not');
 
+   // Function to change double quotes to single quotes in a string
+   function cleanQuotes(stringWithQuotes) {
+      return stringWithQuotes.replace(new RegExp('"', 'g'), "'")
+   }
+
    // API Fetch Function
    function searchAPICall(url, dataToSend) {
       fetch(url, {
@@ -77,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
       url = "http://localhost:9200/articlesindex/_search";
 
       // Get the string value out of the input textbox.
-      query = queryInputElement.value.toLowerCase();
+      query = cleanQuotes(queryInputElement.value.toLowerCase());
 
       if (query.length === 0) {
          // No query inputted
@@ -88,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
          // Build more advanced query with AND/OR support
          // Include initial text box value as first AND clause
-         dataToSend = '{"query": { "bool": { "should": [{"bool": {"must": [{"match": { "text": "' + query + '"}}';
+         dataToSend = '{"query": { "bool": { "should": [{"bool": {"must": [{"match": { "text": "' + cleanQuotes(query) + '"}}';
 
          // Start building advanced API call
          if (advancedSearchActive) {
@@ -101,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
                var elementTextValues = [];
 
                for(var i = 0; i < elements.length; i++) {
-                  elementTextValues[i] = elements[i].value.toLowerCase();
+                  elementTextValues[i] = cleanQuotes(elements[i].value.toLowerCase());
                }
 
                elementTextValues = elementTextValues.filter((str) => str != '');
@@ -128,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
                var elementTextValues = [];
 
                for(var i = 0; i < elements.length; i++) {
-                  elementTextValues[i] = elements[i].value.toLowerCase();
+                  elementTextValues[i] = cleanQuotes(elements[i].value.toLowerCase());
                }
 
                elementTextValues = elementTextValues.filter((str) => str != '');
@@ -164,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function () {
                var elementTextValues = [];
 
                for(var i = 0; i < elements.length; i++) {
-                  elementTextValues[i] = elements[i].value.toLowerCase();
+                  elementTextValues[i] = cleanQuotes(elements[i].value.toLowerCase());
                }
 
                elementTextValues = elementTextValues.filter((str) => str != '');

@@ -23,11 +23,12 @@ h1 {
 }
 
 /* Anchor footer to bottom of page. */
-footer {
-   position: absolute;
-   bottom: 0;
+#bottom-of-page-container {
+   display: flex;
+   flex-direction: column;
    width: 100%;
-   height: 100px;
+   height: 100%;
+   margin-bottom: auto;
    text-align: center;
    font-size: 200%;
 }
