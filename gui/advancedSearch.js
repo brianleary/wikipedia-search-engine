@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
    // Function to change double quotes to single quotes in a string
    function cleanQuotes(stringWithQuotes) {
-      return stringWithQuotes.replace(new RegExp('"', 'g'), "'")
+      return stringWithQuotes.replaceAll('"', "'")
    }
 
    // API Fetch Function
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Loop through each result and create a row in the table
             data.hits.hits.map(searchResult => {
                // Create table row element
-               var urlString = "https://en.wikipedia.org/wiki/" + searchResult._source.title.replace(' ', '_');
+               var urlString = "https://en.wikipedia.org/wiki/" + searchResult._source.title.replaceAll(' ', '_');
                const markup = `<td class="tableCell">${searchResult._score}</td>
                                <td class="tableCell">${searchResult._source.title}</td>
                                <td class="tableCell"><a href=${urlString}>Go to page</a></td>

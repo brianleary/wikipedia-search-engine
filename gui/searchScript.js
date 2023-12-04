@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Loop through each result and create a row in the table
             data.hits.hits.map(searchResult => {
                // Create table row element
-               var urlString = "https://en.wikipedia.org/wiki/" + searchResult._source.title.replace(' ', '_');
+               var urlString = "https://en.wikipedia.org/wiki/" + searchResult._source.title.replaceAll(' ', '_');
                const markup = `<td class="tableCell">${searchResult._score}</td>
                                <td class="tableCell">${searchResult._source.title}</td>
                                <td class="tableCell"><a href=${urlString}>Go to page</a></td>
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
          // Query inputted
          // Create JSON object for search query
          // Basic query used for testing
-         dataToSend = '{"query": { "match": { "text": { "query": "' + query.replace(new RegExp('"', 'g'), "'") + '"}}}}';
+         dataToSend = '{"query": { "match": { "text": { "query": "' + query.replaceAll('"', "'") + '"}}}}';
          console.log(dataToSend);
 
          searchAPICall(url, dataToSend);
