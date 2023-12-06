@@ -64,5 +64,5 @@ spark-submit --class com.brian.App --master "local[*]" --conf spark.es.nodes=loc
 ## Usage
 Once the script finishes running, open the gui subfolder. Open one of the HTML documents and test if the search engine is working:
   * search.html - Allows basic search queries
-  * advancedSearch.html - Allows searches with logic operators AND, OR, and/or NOT
+  * advancedSearch.html - Allows searches with logic operators AND, OR, and/or NOT, as well as searching phrases
   * addPage.html - Allows manually adding additional articles
