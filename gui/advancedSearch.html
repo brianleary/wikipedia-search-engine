@@ -13,12 +13,23 @@
 
 <div id = "searchTextBoxArea">
    <h3>Search query:&nbsp;</h3>
+   <div>
    <input id="query-input" type="text">
+   <form id="phraseSearchContainer">
+      <p>Phrase search?</p>
+      <input type="radio" id="no" name="phraseSearch" value="No" checked>
+      <label for="no">No</label><br>
+      <input type="radio" id="yes" name="phraseSearch" value="Yes">
+      <label for="yes">Yes</label><br>
+   </form>
+   </div>
    <button id="add-and" type="button">Add AND clause</button>
    <button id="add-or" type="button">Add OR clause</button>
    <button id="add-not" type="button">Add NOT clause</button>
    <p><button id="submit-query" type="button">Search</button></p>
 </div>
+
+
 
 <div id="results">
    <table id="query-output"></table>
@@ -27,7 +38,7 @@
 <div id = "bottom-of-page-container">
    <div><a href="addPage.html">Add Additional Articles</a></div>
    <div><a href="search.html">Basic Search</a></div>
-</footer>
+</div>
 
 <!-- Import JavaScript -->
 <script src="advancedSearch.js"></script>

@@ -44,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function () {
             // Create table header
             queryOutputElement.insertAdjacentHTML('beforeend', `<th class="tableCell">Document Score</td>
                                                                 <th class="tableCell">Document Title</td>
-                                                                <th class="tableCell">Link</td>
                                                                 <th class="tableCell">Text Preview</td>`);
 
             // Access data.hits.hits, which is an array of the search results
@@ -53,8 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
                // Create table row element
                var urlString = "https://en.wikipedia.org/wiki/" + searchResult._source.title.replaceAll(' ', '_');
                const markup = `<td class="tableCell">${searchResult._score}</td>
-                               <td class="tableCell">${searchResult._source.title}</td>
-                               <td class="tableCell"><a href=${urlString}>Go to page</a></td>
+                               <td class="tableCell"><a href=${urlString}>${searchResult._source.title}</td>
                                <td class="tableCell">${searchResult._source.text.substring(0, 250)}</td>`;
                queryOutputElement.insertAdjacentHTML('beforeend', markup);
             });

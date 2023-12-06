@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
    // Function to change double quotes to single quotes in a string
    function cleanQuotes(stringWithQuotes) {
-      return stringWithQuotes.replaceAll('"', "'")
+      return stringWithQuotes.replaceAll('"', "'");
    }
 
    // API Fetch Function
@@ -55,7 +55,6 @@ document.addEventListener('DOMContentLoaded', function () {
             // Create table header
             queryOutputElement.insertAdjacentHTML('beforeend', `<th class="tableCell">Document Score</td>
                                                                 <th class="tableCell">Document Title</td>
-                                                                <th class="tableCell">Link</td>
                                                                 <th class="tableCell">Text Preview</td>`);
 
             // Access data.hits.hits, which is an array of the search results
@@ -64,8 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
                // Create table row element
                var urlString = "https://en.wikipedia.org/wiki/" + searchResult._source.title.replaceAll(' ', '_');
                const markup = `<td class="tableCell">${searchResult._score}</td>
-                               <td class="tableCell">${searchResult._source.title}</td>
-                               <td class="tableCell"><a href=${urlString}>Go to page</a></td>
+                               <td class="tableCell"><a href=${urlString}>${searchResult._source.title}</td>
                                <td class="tableCell">${searchResult._source.text.substring(0, 250)}</td>`;
                queryOutputElement.insertAdjacentHTML('beforeend', markup);
             });
@@ -77,12 +75,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
    // Function called when searching (called by eventlisteners)
    function searchQueryFunction() {
-      var query, dataToSend, url;
+      var query, dataToSend, url, phraseSearchActive;
 
       url = "http://localhost:9200/articlesindex/_search";
 
       // Get the string value out of the input textbox.
       query = cleanQuotes(queryInputElement.value.toLowerCase());
+
+      // Check if phrase search is enabled
+      phraseSearchActive = document.getElementById("yes").checked == true;
 
       if (query.length === 0) {
          // No query inputted
@@ -93,7 +94,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
          // Build more advanced query with AND/OR support
          // Include initial text box value as first AND clause
-         dataToSend = '{"query": { "bool": { "should": [{"bool": {"must": [{"match": { "text": "' + cleanQuotes(query) + '"}}';
+         dataToSend = '{"query": { "bool": { "should": [{"bool": {"must": [{"match';
+         if (phraseSearchActive) {
+            dataToSend += '_phrase';
+         }
+         dataToSend += '": { "text": "' + cleanQuotes(query) + '"}}';
 
          // Start building advanced API call
          if (advancedSearchActive) {
@@ -187,7 +192,11 @@ document.addEventListener('DOMContentLoaded', function () {
             
          } else {
             // If no extra text boxes were added, just run the basic query
-            dataToSend = '{"query": { "match": { "text": { "query": "' + query + '"}}}}';
+            dataToSend = '{"query": { "match';
+            if (phraseSearchActive) {
+               dataToSend += '_phrase';
+            }
+            dataToSend += '": { "text": { "query": "' + query + '"}}}}';
          }
 
          console.log(dataToSend);
@@ -212,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function () {
    // Handle clicking on "Add AND" button
    addAndButton.addEventListener('click', function () {
       const markup = `<h3>AND</h3>
-                      <input class="and-clause" type="text" />`;
+                      <input class="and-clause" id="query-input" type="text" />`;
       searchTextBoxElement.insertAdjacentHTML('beforeend', markup);
       advancedSearchActive = true;
       andClauseActive = true;
@@ -221,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function () {
    // Handle clicking on "Add OR" button
    addOrButton.addEventListener('click', function () {
       const markup = `<h3>OR</h3>
-                      <input class="or-clause" type="text" />`;
+                      <input class="or-clause" id="query-input" type="text" />`;
       searchTextBoxElement.insertAdjacentHTML('beforeend', markup);
       advancedSearchActive = true;
       orClauseActive = true;
@@ -230,7 +239,7 @@ document.addEventListener('DOMContentLoaded', function () {
    // Handle clicking on "Add NOT" button
    addNotButton.addEventListener('click', function () {
       const markup = `<h3>NOT</h3>
-                      <input class="not-clause" type="text" />`;
+                      <input class="not-clause" id="query-input" type="text" />`;
       searchTextBoxElement.insertAdjacentHTML('beforeend', markup);
       advancedSearchActive = true;
       notClauseActive = true;
