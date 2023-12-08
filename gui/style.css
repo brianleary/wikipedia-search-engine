@@ -1,16 +1,16 @@
 @charset "UTF-8";
 
-/* Fixing the box-sizing attribute will make sizing boxes easier. */
+/* Fixing the box-sizing attribute will make sizing boxes easier */
 html {
    box-sizing: border-box;
 }
 
 body {
-   /* Set the background color of the whole document to a light gray. */
+   /* Set the background color of the whole document to a light gray */
    background-color: rgb(238, 238, 238);
 }
 
-/* Make heading stand out. */
+/* Make heading stand out */
 h1 {
    background-color: rgb(221, 238, 255);
    color: rgb(68, 0, 17);
@@ -22,7 +22,7 @@ h1 {
    text-align: center;
 }
 
-/* Anchor footer to bottom of page. */
+/* Anchor footer to bottom of page */
 #bottom-of-page-container {
    display: flex;
    flex-direction: column;
@@ -33,7 +33,7 @@ h1 {
    font-size: 200%;
 }
 
-/* Make input text boxes longer. */
+/* Make input text boxes longer */
 #id-input {
    width: 50%;
 }
@@ -47,12 +47,12 @@ h1 {
    width: 50%;
 }
 
-/* Center all h2 elements. */
+/* Center all h2 elements */
 h2 {
    text-align: left;
 }
 
-/* Style the results table. */
+/* Style the results table */
 .resultsTable {
    border-color: rgb(68, 0, 17);
    border-style: solid;
@@ -60,8 +60,8 @@ h2 {
    padding: 9px;
 }
 
-/* Format table cells*/
-.tableCell{
+/* Format table cells */
+.tableCell {
    border-color: rgb(68, 0, 17);
    border-style: solid;
    border-width: 1px;

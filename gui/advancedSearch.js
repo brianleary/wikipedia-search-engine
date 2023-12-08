@@ -9,7 +9,12 @@ document.addEventListener('DOMContentLoaded', function () {
    // Declare this function's local variables.
    var queryInputElement, queryOutputElement, searchTextBoxElement,
        submitqueryButton, addAndButton, addOrButton, addNotButton,
-       advancedSearchActive, andClauseActive, orClauseActive, notClauseActive;
+       advancedSearchActive, andClauseActive, orClauseActive, notClauseActive,
+       previousPageButton, nextPageButton, numberOfPages, pageNumber, response,
+       globalURL, globalNumberOfResults;
+
+   globalURL = "http://localhost:9200/articlesindex/_search";
+   globalNumberOfResults = 1000;
 
    // Find all needed elements and save them in variables.
    queryInputElement = document.querySelector('#query-input');
@@ -24,60 +29,72 @@ document.addEventListener('DOMContentLoaded', function () {
    function cleanQuotes(stringWithQuotes) {
       return stringWithQuotes.replaceAll('"', "'");
    }
-
+   
    // API Fetch Function
-   function searchAPICall(url, dataToSend) {
-      fetch(url, {
+   async function getData(url, dataToSend) {
+      const response = await fetch(url, {
          method: 'POST',
          body: dataToSend,
          mode: 'cors',
          headers: new Headers({
             'Content-Type': 'application/json'
          })
-      })
-      // Convert response to JSON
-      .then(response => {
-         return response.json();
-      })
-      .then(data => {
-         // Log response to console
-         console.log('Response', data);
+      });
+    
+      return response.json();
+   }
 
-         // Clear output for each search
-         queryOutputElement.textContent = "";
+   function displayResults(response, pageNumber) {
+      var searchResult, startingResult, endingResult;
 
-         if (data.hits.hits.length === 0) {
-            // If array size is zero, there were no search results
-            queryOutputElement.textContent = "No results";
-         } else {
-            // There were results
+      // Determine which results to display based on page number
+      startingResult = pageNumber * 10;
+      endingResult = startingResult + 10;
+      if (endingResult > response.hits.hits.length) {
+         endingResult = response.hits.hits.length;
+      }
 
-            // Create table header
-            queryOutputElement.insertAdjacentHTML('beforeend', `<th class="tableCell">Document Score</td>
-                                                                <th class="tableCell">Document Title</td>
-                                                                <th class="tableCell">Text Preview</td>`);
+      // Save results in variable
+      searchResult = response.hits.hits;
 
-            // Access data.hits.hits, which is an array of the search results
-            // Loop through each result and create a row in the table
-            data.hits.hits.map(searchResult => {
-               // Create table row element
-               var urlString = "https://en.wikipedia.org/wiki/" + searchResult._source.title.replaceAll(' ', '_');
-               const markup = `<td class="tableCell">${searchResult._score}</td>
-                               <td class="tableCell"><a href=${urlString}>${searchResult._source.title}</td>
-                               <td class="tableCell">${searchResult._source.text.substring(0, 250)}</td>`;
-               queryOutputElement.insertAdjacentHTML('beforeend', markup);
-            });
-         }
-      })
-      // Catch and log error to console
-      .catch(error => console.log(error));
+      // Clear output for each print
+      queryOutputElement.textContent = "";
+
+      // Create table header
+      queryOutputElement.insertAdjacentHTML('beforeend', `<p>Page: ${pageNumber + 1}<p>
+                                                          <th class="tableCell">Document Score</th>
+                                                          <th class="tableCell">Document Title</th>
+                                                          <th class="tableCell">Text Preview</th>`);
+
+      for (let i = startingResult; i < endingResult; i += 1) {
+         // Create table row element
+         var urlString = "https://en.wikipedia.org/wiki/" + searchResult[i]._source.title.replaceAll(' ', '_');
+         const markup = `<td class="tableCell">${searchResult[i]._score}</td>
+                           <td class="tableCell"><a href=${urlString}>${searchResult[i]._source.title}</td>
+                           <td class="tableCell">${searchResult[i]._source.text.substring(0, 250)}</td>`;
+         queryOutputElement.insertAdjacentHTML('beforeend', markup);
+      }
+      
+      // Add page buttons
+      const markup = `<p>
+                      <div class="pageButton"><button id="previousPageButton" type="button">Previous Page</button></div>
+                      <div class="pageButton"><button id="nextPageButton" type="button">Next Page</button></div>
+                      </p>`;
+      queryOutputElement.insertAdjacentHTML('beforeend', markup);
+
+      // Tie page buttons to functions
+      previousPageButton = document.querySelector('#previousPageButton');
+      nextPageButton = document.querySelector('#nextPageButton');
+      previousPageButton.onclick = previousPageButtonFunction;
+      nextPageButton.onclick = nextPageButtonFunction;
    }
 
    // Function called when searching (called by eventlisteners)
-   function searchQueryFunction() {
-      var query, dataToSend, url, phraseSearchActive;
+   async function searchQueryFunction() {
+      var query, dataToSend, url, numberOfResults, phraseSearchActive;
 
-      url = "http://localhost:9200/articlesindex/_search";
+      url = globalURL;
+      numberOfResults = globalNumberOfResults;
 
       // Get the string value out of the input textbox.
       query = cleanQuotes(queryInputElement.value.toLowerCase());
@@ -89,12 +106,15 @@ document.addEventListener('DOMContentLoaded', function () {
          // No query inputted
          queryOutputElement.textContent = 'Please type in a search query';
       } else {
+         // Clear output for each search
+         queryOutputElement.textContent = "";
+
          // Query inputted
          // Create JSON object for search query
 
          // Build more advanced query with AND/OR support
          // Include initial text box value as first AND clause
-         dataToSend = '{"query": { "bool": { "should": [{"bool": {"must": [{"match';
+         dataToSend = '{"size": ' + numberOfResults + ', "query": { "bool": { "should": [{"bool": {"must": [{"match';
          if (phraseSearchActive) {
             dataToSend += '_phrase';
          }
@@ -192,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function () {
             
          } else {
             // If no extra text boxes were added, just run the basic query
-            dataToSend = '{"query": { "match';
+            dataToSend = '{"size": ' + numberOfResults + ', "query": { "match';
             if (phraseSearchActive) {
                dataToSend += '_phrase';
             }
@@ -202,7 +222,18 @@ document.addEventListener('DOMContentLoaded', function () {
          console.log(dataToSend);
 
          // Uncomment when ready for testing
-         searchAPICall(url, dataToSend);
+         response = await getData(url, dataToSend).then();
+         console.log('Response', response);
+
+         if (response.hits.hits.length === 0) {
+            // If array size is zero, there were no search results
+            queryOutputElement.textContent = "No results";
+         } else {
+            // There were results; display them
+            numberOfPages = Math.floor((response.hits.hits.length - 1)/ 10);
+            pageNumber = 0;
+            displayResults(response, pageNumber);
+         }
       }
    }
 
@@ -244,5 +275,22 @@ document.addEventListener('DOMContentLoaded', function () {
       advancedSearchActive = true;
       notClauseActive = true;
    }, false);
+
+   
+   // Handle clicking on previous page button
+   function previousPageButtonFunction() {
+      if (pageNumber > 0) {
+         pageNumber -= 1;
+         displayResults(response, pageNumber);
+      }    
+   }
+
+   // Handle clicking on next page button
+   function nextPageButtonFunction() {
+      if (pageNumber < numberOfPages) {
+         pageNumber += 1;
+         displayResults(response, pageNumber);
+      }    
+   }
 
 }, false);
