@@ -67,3 +67,19 @@ h2 {
    border-width: 1px;
    padding: 9px;
 }
+
+/* Format page buttons */
+#pageButtonContainer{
+   display:inline-block;
+   width: 100%;
+}
+#previousPageButton{
+   width: 300px;
+   height: 40px;
+   float: left;
+}
+#nextPageButton{
+   width: 300px;
+   height: 40px;
+   float: right;
+}

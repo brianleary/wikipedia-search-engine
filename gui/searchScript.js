@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
    'use strict';
 
    // Declare this function's local variables.
-   var queryInputElement, queryOutputElement, submitqueryButton,
+   var queryInputElement, queryOutputElement, submitqueryButton, pageButtonElement,
        previousPageButton, nextPageButton, numberOfPages,
        pageNumber, response, globalURL, globalNumberOfResults;
 
@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
    queryInputElement = document.querySelector('#query-input');
    submitqueryButton = document.querySelector('#submit-query');
    queryOutputElement = document.querySelector('#query-output');
+   pageButtonElement = document.querySelector('#pageButtons');
 
    // API Fetch Function
    async function getData(url, dataToSend) {
@@ -48,9 +49,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // Clear output for each print
       queryOutputElement.textContent = "";
+      pageButtonElement.textContent = "";
 
       // Create table header
-      queryOutputElement.insertAdjacentHTML('beforeend', `<p>Page: ${pageNumber + 1}<p>
+      queryOutputElement.insertAdjacentHTML('beforeend', `<p>Page: ${pageNumber + 1}</p>
                                                           <th class="tableCell">Document Score</th>
                                                           <th class="tableCell">Document Title</th>
                                                           <th class="tableCell">Text Preview</th>`);
@@ -58,18 +60,19 @@ document.addEventListener('DOMContentLoaded', function () {
       for (let i = startingResult; i < endingResult; i += 1) {
          // Create table row element
          var urlString = "https://en.wikipedia.org/wiki/" + searchResult[i]._source.title.replaceAll(' ', '_');
-         const markup = `<td class="tableCell">${searchResult[i]._score}</td>
+         const markup = `<tr>
+                           <td class="tableCell">${searchResult[i]._score}</td>
                            <td class="tableCell"><a href=${urlString}>${searchResult[i]._source.title}</td>
-                           <td class="tableCell">${searchResult[i]._source.text.substring(0, 250)}</td>`;
+                           <td class="tableCell">${searchResult[i]._source.text.substring(0, 250)}</td>
+                         </tr>`;
          queryOutputElement.insertAdjacentHTML('beforeend', markup);
       }
       
       // Add page buttons
-      const markup = `<p>
-                      <div class="pageButton"><button id="previousPageButton" type="button">Previous Page</button></div>
-                      <div class="pageButton"><button id="nextPageButton" type="button">Next Page</button></div>
-                      </p>`;
-      queryOutputElement.insertAdjacentHTML('beforeend', markup);
+      pageButtonElement.insertAdjacentHTML('beforeend', `<p id="pageButtonContainer">
+                                                            <button id="previousPageButton" type="button">Previous Page</button>
+                                                            <button id="nextPageButton" type="button">Next Page</button>
+                                                         </p>`);
 
       // Tie page buttons to functions
       previousPageButton = document.querySelector('#previousPageButton');
@@ -88,6 +91,9 @@ document.addEventListener('DOMContentLoaded', function () {
       // Get the string value out of the input textbox.
       query = queryInputElement.value.toLowerCase();
 
+      // Clear page buttons regardless of query length (they will be reprinted if needed)
+      pageButtonElement.textContent = "";
+
       if (query.length === 0) {
          // No query inputted
          queryOutputElement.textContent = 'Please type in a search query';
@@ -98,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
          // Query inputted
          // Create JSON object for search query
          // Basic query used for testing
-         dataToSend = '{"size": ' + numberOfResults + ', "query": { "match": { "text": { "query": "' + query.replaceAll('"', "'") + '"}}}}';
+         dataToSend = '{"size": ' + numberOfResults + ', "query": { "match": { "text": { "query": "' + query.replaceAll('"', "'").replaceAll('\\', "") + '"}}}}';
          console.log(dataToSend);
 
          response = await getData(url, dataToSend).then();
