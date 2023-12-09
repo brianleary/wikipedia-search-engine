@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
          // Query inputted
          // Create JSON object for search query
-         // Basic query used for testing
+         // Basic search query
          dataToSend = '{"size": ' + numberOfResults + ', "query": { "match": { "text": { "query": "' + query.replaceAll('"', "'").replaceAll('\\', "") + '"}}}}';
          console.log(dataToSend);
 

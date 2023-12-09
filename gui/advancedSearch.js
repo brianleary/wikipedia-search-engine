@@ -185,6 +185,9 @@ document.addEventListener('DOMContentLoaded', function () {
                if (elementTextValues.length != 0) {
                   // Add closing brackets for NOT clauses
                   dataToSend += ']}}';
+               } else {
+                  // Close AND clause if only blank NOT clauses exist
+                  dataToSend += '}}';
                }
             }
 
@@ -227,7 +230,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
          console.log(dataToSend);
 
-         // Uncomment when ready for testing
          response = await getData(url, dataToSend).then();
          console.log('Response', response);
 
